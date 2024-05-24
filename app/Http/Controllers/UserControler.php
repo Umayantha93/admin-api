@@ -11,7 +11,7 @@ class UserControler extends Controller
 {
     public function index()
     {
-        return User::paginate(1);
+        return User::paginate(10);
     }
 
     public function create()
