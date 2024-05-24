@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UserInfoRequest;
+use App\Http\Requests\UserPasswordRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,11 +63,22 @@ class AuthController extends Controller
         ])->withCookie($cookie);
     }
 
-    public function UpdateInfo(Request $request)
+    public function UpdateInfo(UserInfoRequest $request)
     {
         $user = $request->user();
 
         $user->update($request->only('first_name', 'last_name', 'email'));
+
+        return response($user, Response::HTTP_ACCEPTED);
+    }
+
+    public function UpdatePassword(UserPasswordRequest $request)
+    {
+        $user = $request->user();
+
+        $user->update([
+            'password' => Hash::make($request->input('password'))
+        ]);
 
         return response($user, Response::HTTP_ACCEPTED);
     }
