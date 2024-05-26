@@ -12,7 +12,7 @@ class RoleController extends Controller
 
     public function index()
     {
-        return RoleResource::collection(Role::all());
+        return RoleResource::collection(Role::paginate());
     }
 
     public function store(Request $request)
@@ -27,7 +27,7 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
-        return new RoleResource(Role::find($id));
+        return new RoleResource(Role::with('permissions')->find($id));
     }
 
     public function update(Request $request, string $id)
