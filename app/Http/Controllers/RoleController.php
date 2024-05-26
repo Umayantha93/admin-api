@@ -12,14 +12,16 @@ class RoleController extends Controller
 
     public function index()
     {
-        return RoleResource::collection(Role::all());
+        return RoleResource::collection(Role::paginate());
     }
 
     public function store(Request $request)
     {
         $role = Role::create($request->only('name'));
 
-        return response(new RoleResource($role), Response::HTTP_CREATED);
+        $role->permissions()->attach($request->input('permissions'));
+
+        return response(new RoleResource($role->load('permissions')), Response::HTTP_CREATED);
     }
 
     /**
@@ -27,16 +29,18 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
-        return new RoleResource(Role::find($id));
+        return new RoleResource(Role::with('permissions')->find($id));
     }
 
     public function update(Request $request, string $id)
     {
-        $role = Role::find($id);
+        $role = Role::findOrFail($id);
 
         $role->update($request->only('name'));
 
-        return response(new RoleResource($role), Response::HTTP_ACCEPTED);
+        $role->permissions()->sync($request->input('permissions'));
+
+        return response(new RoleResource($role->load('permissions')), Response::HTTP_ACCEPTED);
     }
 
     /**
