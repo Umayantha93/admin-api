@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $first_name
@@ -42,4 +42,9 @@ class User extends Authenticatable
     protected $guarded = [];
 
     protected $hidden = ['password'];
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }
