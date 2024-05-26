@@ -71,7 +71,7 @@ class AuthController extends Controller
 
         $user->update($request->only('first_name', 'last_name', 'email'));
 
-        return response(new UserResource($user), Response::HTTP_ACCEPTED);
+        return response(new UserResource($user) , Response::HTTP_ACCEPTED);
     }
 
     public function UpdatePassword(UserPasswordRequest $request)
