@@ -16,7 +16,7 @@ class OrderController extends Controller
 
     public function show($id)
     {
-        $order = Order::find($id);
+        $order = Order::with('orderItems')->find($id);
         return new OrderResource($order);
     }
 }
